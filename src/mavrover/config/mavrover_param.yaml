@@ -1,0 +1,62 @@
+
+# for mavros_rover launcher
+
+mavros:
+  ros__parameters: 
+    plugin_denylist: ["vision_speed", "wheel_odomotry", "vibration", "tunnel", "distance_sensor"]
+    plugin_allowlist: ["mount_control", "rc_io", "sys_status", "vfr_hud"]
+
+/mavros/sys:
+  ros__parameters:
+    min_voltage: 10.0   # diagnostics min voltage
+    disable_diag: false # disable all sys_status diagnostics, except heartbeat
+
+/mavros/conn:
+  ros__parameters:
+    heartbeat_rate: 1.0    # send hertbeat rate in Hertz
+    system_time_rate: 1.0  # send system time to FCU rate in Hertz (disabled if 0.0
+    timeout: 10.0          # hertbeat timeout in seconds
+    timesync_rate: 10.0    # TIMESYNC rate in Hertz (feature disabled if 0.0)
+    heartbeat_mav_type: "ONBOARD_CONTROLLER"
+
+
+/mavros/global_position:
+  ros__parameters:
+    frame_id: "map"             # origin frame
+    child_frame_id: "base_link" # body-fixed frame
+    rot_covariance: 99999.0   # covariance for attitude?
+    gps_uere: 1.0             # User Equivalent Range Error (UERE) of GPS sensor (m)
+    use_relative_alt: true    # use relative altitude for local coordinates
+
+
+
+# mavros_router:
+#   ros__parameters:
+#     fcu_urls:
+#       - udp://:14550@
+#       - udp://:14551@
+#     uas_urls:
+#       - /uas1
+#       - /uas2
+
+mavros_node:
+  ros__parameters:
+    fcu_url: udp://:14551@14555
+    # gcs_url: tcp-l://:5670
+    gcs_url: udp://@127.0.0.1:14550
+    tgt_system: 1
+    tgt_component : 1
+    log_output: screen
+    fcu_protocol: v2.0
+    # respawn_mavros: false
+    # fcu_url: /dev/ttyACM0:2000000
+
+
+# mavros_node: # new solution
+#   ros__parameters:
+#     fcu_url: udp://:14550@14551
+#     gcs_url: tcp-l://:5670
+#     tgt_system: 1
+#     tgt_component : 1
+#     system_id: 255
+#     component_id: 240
